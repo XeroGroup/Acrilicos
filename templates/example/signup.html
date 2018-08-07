@@ -1,0 +1,63 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+
+<form action="" method="post" data-validate-username-url="{% url 'validate_username' %}">
+	{% csrf_token %}
+	{{ form.as_p}}
+	<button type="submit">SignUp</button>
+</form>
+<div id="username_status"></div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+	
+	// $('#id_username').change(function(){
+	// 	console.log($(this).val());
+
+	// 	var username = $(this).val();
+
+	// 	$.ajax({
+	// 		url: "{% url 'validate_username' %}",
+	// 		data:{
+	// 			'username': username
+	// 		},
+	// 		dataType: 'json',
+	// 		success: function (data) {
+	// 			if(data.is_taken){
+	// 				alert('A user with this username already exists.');
+	// 			}
+	// 			else{
+	// 				alert('El nombre de usuario está disponible');
+	// 			}
+	// 		}
+	// 	});
+	// });
+
+	$('#id_username').change(function(){
+
+		var form = $(this).closest('form');
+
+		var username_status = $('#username_status').html
+
+		$.ajax({
+			url: form.attr('data-validate-username-url'),
+			data: form.serialize(),
+			dataType: 'json',
+			success: function(data){
+				$('#username_status').html(data.status)
+			}
+		})
+
+
+	})
+
+</script>
+
+
+{% endblock %}
+
+
+
